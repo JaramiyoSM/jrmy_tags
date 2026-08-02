@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jrmy_tags</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="world-layer" id="worldLayer" aria-hidden="true"></div>
+
+    <div class="panel-app" id="panelApp" aria-hidden="true" hidden>
+        <div class="petals" id="petals" aria-hidden="true"></div>
+
+        <section class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" tabindex="-1">
+            <span class="corner corner--tl" aria-hidden="true"></span>
+            <span class="corner corner--tr" aria-hidden="true"></span>
+            <span class="corner corner--bl" aria-hidden="true"></span>
+            <span class="corner corner--br" aria-hidden="true"></span>
+
+            <header class="header">
+                <div class="brand">
+                    <div class="brand__avatar">
+                        <img src="assets/jaramiyo-avatar.webp" alt="Jaramiyo" width="180" height="180">
+                        <span class="brand__status" aria-hidden="true"></span>
+                    </div>
+                    <div class="brand__copy">
+                        <span class="brand__eyebrow" data-i18n="brand_eyebrow">Jaramiyo tag studio</span>
+                        <h1 id="panelTitle" data-i18n="brand_title">Tags con personalidad</h1>
+                        <p id="panelSubtitle" data-i18n="brand_subtitle">Tu colección, tu estilo, tu momento.</p>
+                    </div>
+                </div>
+
+                <div class="header__actions">
+                    <span class="mode-badge" id="modeBadge"></span>
+                    <span class="keyboard-hint" data-i18n="keyboard_hint">ESC para cerrar</span>
+                    <button class="icon-button" id="soundButton" type="button" aria-label="Silenciar sonidos"></button>
+                    <button class="icon-button icon-button--close" id="closeButton" type="button" aria-label="Cerrar" data-icon="x"></button>
+                </div>
+            </header>
+
+            <main class="main">
+                <section class="view view--player" id="playerView" aria-labelledby="collectionTitle">
+                    <div class="player-layout">
+                        <aside class="player-summary">
+                            <div class="summary-heading">
+                                <div>
+                                    <span class="section-kicker" data-i18n="selected_tag">Tag seleccionado</span>
+                                    <h2 id="playerName">Jaramiyo</h2>
+                                </div>
+                                <span class="status-pill" id="playerStatusPill"></span>
+                            </div>
+
+                            <div class="character-preview character-preview--player">
+                                <div class="preview-tag-anchor" id="playerTagPreview"></div>
+                                <img src="assets/jaramiyo-preview.webp" alt="" width="1254" height="1254">
+                                <span class="preview-floor" aria-hidden="true"></span>
+                            </div>
+
+                            <div class="quick-controls">
+                                <button class="quick-control" id="visibilityButton" type="button" aria-pressed="false">
+                                    <span class="quick-control__icon" data-icon="eye"></span>
+                                    <span><strong data-i18n="show_tag">Mostrar tag</strong><small id="visibilityState" data-i18n="hidden_now">Oculto ahora</small></span>
+                                    <span class="switch" aria-hidden="true"><span></span></span>
+                                </button>
+                                <button class="quick-control" id="afkButton" type="button" aria-pressed="false">
+                                    <span class="quick-control__icon quick-control__icon--lilac" data-icon="moon"></span>
+                                    <span><strong data-i18n="enable_afk">Entrar en AFK</strong><small id="afkState" data-i18n="afk_inactive">Disponible</small></span>
+                                    <span class="switch" aria-hidden="true"><span></span></span>
+                                </button>
+                            </div>
+                        </aside>
+
+                        <section class="collection-panel">
+                            <div class="section-heading">
+                                <div>
+                                    <span class="section-kicker" data-i18n="tags_owned">Tags disponibles</span>
+                                    <h2 id="collectionTitle" data-i18n="collection_title">Mis tags</h2>
+                                    <p data-i18n="collection_subtitle">Elige cuál quieres llevar sobre tu personaje.</p>
+                                </div>
+                                <span class="count-badge" id="grantCount">0</span>
+                            </div>
+                            <div class="tag-grid" id="grantGrid"></div>
+                            <div class="empty-state" id="playerEmpty" hidden>
+                                <img src="assets/jaramiyo-preview.webp" alt="" width="1254" height="1254">
+                                <div>
+                                    <h2 data-i18n="collection_empty_title">Tu colección está esperando</h2>
+                                    <p data-i18n="collection_empty_text">Cuando administración te entregue un tag aparecerá aquí.</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <section class="view view--admin" id="adminView" aria-labelledby="adminTitle">
+                    <div class="admin-topbar">
+                        <div class="stats">
+                            <article class="stat-card">
+                                <span class="stat-card__icon" data-icon="badge-check"></span>
+                                <span><strong id="statAssignments">0</strong><small data-i18n="stat_assignments">Asignaciones</small></span>
+                            </article>
+                            <article class="stat-card">
+                                <span class="stat-card__icon stat-card__icon--lilac" data-icon="users"></span>
+                                <span><strong id="statPeople">0</strong><small data-i18n="stat_people">Personas</small></span>
+                            </article>
+                            <article class="stat-card">
+                                <span class="stat-card__icon stat-card__icon--green" data-icon="eye"></span>
+                                <span><strong id="statVisible">0</strong><small data-i18n="stat_visible">Visibles</small></span>
+                            </article>
+                            <article class="stat-card">
+                                <span class="stat-card__icon stat-card__icon--gold" data-icon="palette"></span>
+                                <span><strong id="statTemplates">0</strong><small data-i18n="stat_templates">Estilos</small></span>
+                            </article>
+                        </div>
+                        <button class="button button--primary" id="newAssignmentButton" type="button">
+                            <span class="button__icon" data-icon="user-plus"></span>
+                            <span data-i18n="new_assignment">Entregar tag</span>
+                        </button>
+                    </div>
+
+                    <div class="admin-layout">
+                        <aside class="online-card">
+                            <div class="card-heading">
+                                <div>
+                                    <span class="section-kicker" data-i18n="online">Conectado</span>
+                                    <h2 data-i18n="online_players">Jugadores conectados</h2>
+                                </div>
+                                <span class="live-dot" aria-hidden="true"></span>
+                            </div>
+                            <label class="search-control search-control--compact" for="playerSearch">
+                                <span data-icon="search"></span>
+                                <input id="playerSearch" type="search" autocomplete="off" data-i18n-placeholder="search_players" placeholder="Buscar por nombre o ID...">
+                            </label>
+                            <div class="online-list" id="onlineList"></div>
+                            <div class="mini-empty" id="onlineEmpty" hidden>
+                                <span data-icon="users"></span>
+                                <strong data-i18n="no_players_title">No hay jugadores disponibles</strong>
+                                <small data-i18n="no_players_text">Conecta una persona para entregarle un tag nuevo.</small>
+                            </div>
+                        </aside>
+
+                        <section class="assignment-card">
+                            <div class="assignment-card__header">
+                                <div>
+                                    <span class="section-kicker" data-i18n="admin_title">Tag studio</span>
+                                    <h2 id="adminTitle" data-i18n="assignments">Asignaciones</h2>
+                                </div>
+                                <button class="icon-button icon-button--small" id="refreshButton" type="button" aria-label="Actualizar" data-icon="refresh-cw"></button>
+                            </div>
+                            <div class="assignment-tools">
+                                <label class="search-control" for="assignmentSearch">
+                                    <span data-icon="search"></span>
+                                    <input id="assignmentSearch" type="search" autocomplete="off" data-i18n-placeholder="search_assignments" placeholder="Buscar persona, tag o estilo...">
+                                </label>
+                                <div class="filter-chips" id="assignmentFilters" role="group" aria-label="Filtros" data-i18n-aria-label="filters_label">
+                                    <button class="chip is-active" type="button" data-filter="all" data-i18n="filter_all" aria-pressed="true">Todos</button>
+                                    <button class="chip" type="button" data-filter="online" data-i18n="filter_online" aria-pressed="false">Conectados</button>
+                                    <button class="chip" type="button" data-filter="visible" data-i18n="filter_visible" aria-pressed="false">Visibles</button>
+                                    <button class="chip" type="button" data-filter="temporary" data-i18n="filter_temporary" aria-pressed="false">Temporales</button>
+                                </div>
+                            </div>
+                            <div class="assignment-list" id="assignmentList"></div>
+                            <div class="admin-empty" id="assignmentEmpty" hidden>
+                                <img src="assets/jaramiyo-preview.webp" alt="" width="1254" height="1254">
+                                <div>
+                                    <h3 data-i18n="no_assignments_title">Todavía no hay asignaciones</h3>
+                                    <p data-i18n="no_assignments_text">Entrega el primer tag para comenzar.</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="footer">
+                <span><span class="footer__spark" data-icon="sparkles"></span><span data-i18n="powered_by">Jaramiyo</span></span>
+                <span>jrmy_tags · v1.1.0</span>
+            </footer>
+        </section>
+
+        <div class="modal-layer" id="editorLayer" aria-hidden="true">
+            <button class="modal-backdrop" type="button" tabindex="-1" aria-label="Cerrar"></button>
+            <section class="modal modal--editor" id="editorModal" role="dialog" aria-modal="true" aria-labelledby="editorTitle" tabindex="-1">
+                <header class="modal__header">
+                    <span class="modal__mark" data-icon="wand-sparkles"></span>
+                    <div>
+                        <span class="section-kicker" data-i18n="admin_title">Tag studio</span>
+                        <h2 id="editorTitle" data-i18n="editor_new_title">Entregar un tag</h2>
+                        <p data-i18n="editor_subtitle">Personaliza el texto sin alterar el estilo seguro del servidor.</p>
+                    </div>
+                    <button class="icon-button icon-button--small modal-close" type="button" aria-label="Cerrar" data-icon="x"></button>
+                </header>
+
+                <form class="editor-form" id="editorForm">
+                    <div class="editor-fields">
+                        <label class="field" id="targetField">
+                            <span class="field__label" data-i18n="target">Persona</span>
+                            <select id="targetSelect" required></select>
+                        </label>
+                        <label class="field">
+                            <span class="field__label" data-i18n="style">Estilo</span>
+                            <select id="styleSelect" required></select>
+                        </label>
+                        <div class="field-row">
+                            <label class="field">
+                                <span class="field__label" data-i18n="label">Texto principal</span>
+                                <input id="labelInput" type="text" maxlength="32" autocomplete="off" data-i18n-placeholder="label_placeholder" placeholder="Ej. OWNER">
+                            </label>
+                            <label class="field field--emoji">
+                                <span class="field__label" data-i18n="emoji">Emoji</span>
+                                <input id="emojiInput" type="text" maxlength="12" autocomplete="off" data-i18n-placeholder="emoji_placeholder" placeholder="👑">
+                            </label>
+                        </div>
+                        <label class="field">
+                            <span class="field__label" data-i18n="subtitle">Subtítulo</span>
+                            <input id="subtitleInput" type="text" maxlength="48" autocomplete="off" data-i18n-placeholder="subtitle_placeholder" placeholder="Un detalle opcional...">
+                        </label>
+                        <label class="field">
+                            <span class="field__label"><span data-i18n="expiration">Duración</span><output id="daysOutput">0 días</output></span>
+                            <input id="daysInput" type="range" min="0" max="365" step="1" value="0">
+                            <small data-i18n="expiration_hint">0 días mantiene el tag permanentemente.</small>
+                        </label>
+                    </div>
+
+                    <aside class="editor-preview">
+                        <div class="preview-copy">
+                            <span class="section-kicker" data-i18n="preview">Vista previa</span>
+                            <p data-i18n="preview_caption">Así se verá sobre el personaje.</p>
+                        </div>
+                        <div class="character-preview character-preview--editor">
+                            <div class="preview-tag-anchor" id="editorTagPreview"></div>
+                            <img src="assets/jaramiyo-preview.webp" alt="" width="1254" height="1254">
+                            <span class="preview-floor" aria-hidden="true"></span>
+                        </div>
+                    </aside>
+
+                    <div class="modal__actions">
+                        <button class="button button--ghost editor-cancel" type="button" data-i18n="cancel">Cancelar</button>
+                        <button class="button button--primary" id="saveButton" type="submit">
+                            <span class="button__icon" data-icon="check"></span>
+                            <span id="saveButtonText" data-i18n="deliver">Entregar tag</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="modal-layer" id="confirmLayer" aria-hidden="true">
+            <button class="modal-backdrop" type="button" tabindex="-1" aria-label="Cerrar"></button>
+            <section class="modal modal--confirm" id="confirmModal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText" tabindex="-1">
+                <span class="confirm-icon" data-icon="triangle-alert"></span>
+                <h2 id="confirmTitle" data-i18n="delete_title">¿Retirar este tag?</h2>
+                <p id="confirmText"></p>
+                <div class="modal__actions modal__actions--center">
+                    <button class="button button--ghost confirm-cancel" type="button" data-i18n="cancel">Cancelar</button>
+                    <button class="button button--danger" id="confirmDeleteButton" type="button">
+                        <span class="button__icon" data-icon="trash-2"></span>
+                        <span data-i18n="delete_confirm">Sí, retirar</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
